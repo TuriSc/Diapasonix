@@ -1,0 +1,15 @@
+[submodule "lib/pico-mpr121"]
+	path = lib/pico-mpr121
+	url = https://github.com/antgon/pico-mpr121/
+[submodule "lib/amy/amy"]
+	path = lib/amy/amy
+	url = https://github.com/shorepine/amy
+[submodule "lib/RP2040-Battery-Check"]
+	path = lib/RP2040-Battery-Check
+	url = https://github.com/TuriSc/RP2040-Battery-Check
+[submodule "lib/RP2040-Button"]
+	path = lib/RP2040-Button
+	url = https://github.com/TuriSc/RP2040-Button
+[submodule "lib/pico-ssd1306"]
+	path = lib/pico-ssd1306
+	url = https://github.com/TuriSc/pico-ssd1306
