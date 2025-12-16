@@ -26,10 +26,10 @@ module headers_cover() {
         cube([r * 2, dist + r * 2, cap_header_cover_top_h]);
         
         // Screws
-        translate([r, cap_header_cover_screw_y1, 0])
+        translate([r, cap_header_cover_screw_y1, -1])
         countersunk();
         
-        translate([r, dist + cap_header_cover_screw_y2_offset, 0])
+        translate([r, dist + cap_header_cover_screw_y2_offset, -1])
         countersunk();
     }
 }

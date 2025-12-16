@@ -28,6 +28,9 @@ module fret(mag_holes=true) {
             }
         }
     }
+    // Brim
+    translate([0, -fret_d/2 - fret_brim_d, 0])
+    cube([fret_w, fret_d+fret_brim_d*2, fret_brim_h]);
 }
 
 if(is_undef(is_root)) {

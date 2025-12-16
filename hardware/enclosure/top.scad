@@ -9,7 +9,7 @@ module top(){
         translate([wall_d + header_pos_x, wall_d + header_pos_y_offset + header_pos_y, 0])
         cube([header_w, header_l, header_h]);
         
-        translate([pcb_w - pcb_edge_offset - header_pos_x2_offset, wall_d + header_pos_y_offset + header_pos_y, 0])
+        translate([pcb_w - pcb_edge_offset - header_w/2 - header_pos_x/2, wall_d + header_pos_y_offset + header_pos_y, 0])
         cube([header_w, header_l, header_h]);
         
         // PCB
@@ -20,12 +20,13 @@ module top(){
         *translate([top_opening_x, wall_d + top_opening_y_offset, 0])
         cube([top_opening_w, top_opening_d, wall_d + pcb_clearance]);
         
+
         // Fret cutouts
-        translate([top_opening_x + fret_cutout_x_offset, pod_d + ridge_d / 2 + r_clearance, -wall_d])
+        #translate([top_opening_x + fret_cutout_x_offset, pod_d + ridge_d / 2 + r_clearance,0])
         for (s = [0:n_strings-1]) {
             for (f = [0:n_pods_per_string-1]) {
                 translate([f * fret_spacing, s * pod_d, 0])
-                linear_extrude(wall_d*3)
+                linear_extrude(wall_d + pcb_clearance)
                 hull(){
                     translate([fret_r, 0, 0])
                     circle(fret_r + r_clearance);
@@ -37,31 +38,24 @@ module top(){
     
         // Screw holes, PCB
         translate([wall_d + pcb_screw_offset_x, wall_d + pcb_screw_offset_y + screw_pos_y_offset, countersunk_depth])
-        countersunk();
+        screw_hole();
     
         translate([wall_d + pcb_screw_offset_x, wall_d + pcb_screw_offset_y_bottom + screw_pos_y_offset, countersunk_depth])
-        countersunk();
+        screw_hole();
     
         translate([wall_d + pcb_w - pcb_screw_offset_x, wall_d + pcb_screw_offset_y + screw_pos_y_offset, countersunk_depth])
-        countersunk();
+        screw_hole();
     
         translate([wall_d + pcb_w - pcb_screw_offset_x, wall_d + pcb_screw_offset_y_bottom + screw_pos_y_offset, countersunk_depth])
-        countersunk();
+        screw_hole();
     
         // Screw holes, UI
         translate([neck_w - ui_screw_x_offset, wall_d + pcb_screw_offset_y + screw_pos_y_offset, countersunk_offset])
         countersunk();
     
-        // Screw holes, OLED
-        translate([neck_w - oled_screw_x1, neck_d / 2 + oled_screw_y1, countersunk_offset])
+        translate([neck_w - ui_screw_x_offset, neck_d / 2 + oled_screw_y1, countersunk_offset])
         countersunk();
-        translate([neck_w - oled_screw_x2, neck_d / 2 + oled_screw_y1, countersunk_offset])
-        countersunk();
-        translate([neck_w - oled_screw_x2, neck_d / 2 - oled_screw_y2, countersunk_offset])
-        countersunk();
-        translate([neck_w - oled_screw_x1, neck_d / 2 - oled_screw_y2, countersunk_offset])
-        countersunk();
-    
+
         // OLED opening
         translate([neck_w - oled_pos_x - oled_clearance, neck_d / 2 - oled_pos_y_offset - oled_clearance, 0])
         cube([oled_opening_w, oled_opening_d, oled_opening_z]);

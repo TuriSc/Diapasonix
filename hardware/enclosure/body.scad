@@ -50,13 +50,13 @@ module body(){
         translate([0, tray_w / 2 + tray_eyelet_y_offset, tray_eyelet_z])
         rotate([90, 0, 90])
         translate([0, 0, eyelet_countersunk_z])
-        cylinder(h = screw_hole_depth, r = screw_r, $fn = 64);
+        cylinder(h = screw_hole_depth, r = screw_hole_r, $fn = 64);
         
         translate([neck_w - wall_d * 2, neck_r1 - margin, 0])
         translate([0, -tray_w / 2 - tray_eyelet_y_offset, tray_eyelet_z])
         rotate([-90, 0, -90])
         translate([0, 0, eyelet_countersunk_z])
-        cylinder(h = screw_hole_depth, r = screw_r, $fn = 64);
+        cylinder(h = screw_hole_depth, r = screw_hole_r, $fn = 64);
         
         // Speaker holes
         translate([neck_w - shell_battery_offset_x + speaker_spacing, neck_d / 2, -neck_r1])
@@ -111,31 +111,24 @@ module body(){
         cube([pcb_w - 4, pcb_d - 13, wall_d]);
     
         // Screw holes, PCB
-        translate([wall_d + pcb_screw_offset_x, wall_d + pcb_screw_offset_y + screw_pos_y_offset, -wall_d])
-        cylinder(r = screw_r, h = wall_d, $fn = 64);
+        translate([wall_d + pcb_screw_offset_x, wall_d + pcb_screw_offset_y + screw_pos_y_offset, -threaded_insert_h])
+        cylinder(r = threaded_insert_r, h = threaded_insert_h, $fn = 64);
         
-        translate([wall_d + pcb_screw_offset_x, wall_d + pcb_screw_offset_y_bottom + screw_pos_y_offset, -wall_d])
-        cylinder(r = screw_r, h = wall_d, $fn = 64);
+        translate([wall_d + pcb_screw_offset_x, wall_d + pcb_screw_offset_y_bottom + screw_pos_y_offset, -threaded_insert_h])
+        cylinder(r = threaded_insert_r, h = threaded_insert_h, $fn = 64);
         
-        translate([wall_d + pcb_w - pcb_screw_offset_x, wall_d + pcb_screw_offset_y + screw_pos_y_offset, -wall_d])
-        cylinder(r = screw_r, h = wall_d, $fn = 64);
+        translate([wall_d + pcb_w - pcb_screw_offset_x, wall_d + pcb_screw_offset_y + screw_pos_y_offset, -threaded_insert_h])
+        cylinder(r = threaded_insert_r, h = threaded_insert_h, $fn = 64);
         
-        translate([wall_d + pcb_w - pcb_screw_offset_x, wall_d + pcb_screw_offset_y_bottom + screw_pos_y_offset, -wall_d])
-        cylinder(r = screw_r, h = wall_d, $fn = 64);
+        translate([wall_d + pcb_w - pcb_screw_offset_x, wall_d + pcb_screw_offset_y_bottom + screw_pos_y_offset, -threaded_insert_h])
+        cylinder(r = threaded_insert_r, h = threaded_insert_h, $fn = 64);
         
         // Screw holes, UI
-        translate([neck_w - ui_screw_x_offset, wall_d + pcb_screw_offset_y + screw_pos_y_offset, -wall_d])
-        cylinder(r = screw_r, h = wall_d, $fn = 64);
-        
-        // Screw holes, OLED
-        translate([neck_w - oled_screw_x1, neck_d / 2 + oled_screw_y1, -7.2])
-        cylinder(r = screw_r, h = 5, $fn = 64);
-        translate([neck_w - oled_screw_x2, neck_d / 2 + oled_screw_y1, -7.2])
-        cylinder(r = screw_r, h = 5, $fn = 64);
-        translate([neck_w - oled_screw_x2, neck_d / 2 - oled_screw_y2, -7.2])
-        cylinder(r = screw_r, h = 5, $fn = 64);
-        translate([neck_w - oled_screw_x1, neck_d / 2 - oled_screw_y2, -7.2])
-        cylinder(r = screw_r, h = 5, $fn = 64);
+        translate([neck_w - ui_screw_x_offset, wall_d + pcb_screw_offset_y + screw_pos_y_offset, -threaded_insert_h])
+        cylinder(r = threaded_insert_r, h = threaded_insert_h, $fn = 64);
+        translate([neck_w - ui_screw_x_offset, neck_d / 2 + oled_screw_y1, -threaded_insert_h])
+        cylinder(r = threaded_insert_r, h = threaded_insert_h, $fn = 64);
+
         
         // OLED opening
         translate([neck_w - oled_pos_x - 5.1, neck_d / 2 - oled_opening_top_offset, -2])
@@ -160,6 +153,8 @@ module body(){
     standoff(2);
     
     // Standoffs, UI
+    translate([neck_w - ui_screw_x_offset, neck_d / 2 + oled_screw_y1, -wall_d - 2])
+    standoff(2);
     translate([neck_w - ui_screw_x_offset, wall_d + pcb_screw_offset_y + screw_pos_y_offset, -wall_d - 2])
     standoff(2);
 }

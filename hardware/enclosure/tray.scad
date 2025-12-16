@@ -4,7 +4,6 @@ include <shell.scad>
 $fn=resolution;
 
 module chassis(){
-    color("gold")
     translate([-wall_d, 0, 0])
     difference(){
         // Main shape
@@ -55,19 +54,19 @@ module chassis(){
        
         // Screw holes, Pico
         translate([pico_screw_x, -pico_screw_y, chassis_z2])
-        cylinder(h = pico_screw_h, r = screw_r);
+        cylinder(h = pico_screw_h, r = screw_hole_r);
         translate([pico_screw_x, pico_screw_y, chassis_z2])
-        cylinder(h = pico_screw_h, r = screw_r);
+        cylinder(h = pico_screw_h, r = screw_hole_r);
         
         // Screw holes, amp
         translate([amp_screw_x, -amp_screw_y, amp_screw_z])
-        cylinder(h = amp_screw_h, r = screw_r);
+        cylinder(h = amp_screw_h, r = screw_hole_r);
         translate([amp_screw_x, amp_screw_y, amp_screw_z])
-        cylinder(h = amp_screw_h, r = screw_r);
+        cylinder(h = amp_screw_h, r = screw_hole_r);
         
         // TP4056 stop
         translate([tp4056_stop_x, 0, tp4056_stop_z])
-        cylinder(h = tp4056_stop_h, r = screw_r);
+        cylinder(h = tp4056_stop_h, r = screw_hole_r);
     }
 }
 
@@ -153,14 +152,9 @@ module tray(){
         *translate([bootsel_x, bootsel_y, bootsel_z])
         rotate([0, 0, -90])
         cylinder(h = bootsel_h, r = bootsel_r);
-    
-        // Bottom screw
-        rotate([-180, 0, 0])
-        translate([tray_bottom_screw_x, 0, neck_r1 - tray_m - tray_bottom_screw_z_offset])
-        cylinder(r = screw_r, h = screw_hole_depth, $fn = 64);
     }
 }
 
 if(is_undef(is_root)) {
-    tray();
+    color("gold") tray();
 }

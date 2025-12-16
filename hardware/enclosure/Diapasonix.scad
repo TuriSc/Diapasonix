@@ -1,8 +1,9 @@
+// v1.1.0
 // To be cleaned up, as I tried different construction
 // methods and left a trail of unused variables.
 
 resolution = 128; // Adjust as needed
-$fn=resolution;
+use_threaded_inserts = true;
 
 n_strings = 4;
 n_pods_per_string = 6;
@@ -11,12 +12,12 @@ pod_w = 25;
 pod_d = 10;
 pod_h = 2.4;
 
-fret_w = 20;
-fret_d = 5;
+fret_w = 18;
+fret_d = 2;
 fret_h = 4; // min is fret_r
 fret_r = fret_d/2;
-fret_skirt_w = 0.6;
-fret_skirt_h = 0.6;
+fret_brim_d = 2.2;
+fret_brim_h = 0.6;
 
 silicone_h = 1;
 
@@ -31,12 +32,14 @@ capo_offset_w = 7;
 
 wall_d = 2.0;
 
-standoff_r = 2.6;
-screw_r = 1.2; // 1 is too small
+screw_hole_r = 1.2;
+threaded_insert_r = 1.9;
+threaded_insert_h = 4;
+standoff_r = 3;
 so_clr = 0.4;
 
 neck_w = pod_w*n_pods_per_string+ui_w;
-neck_d = pod_d*n_strings+ridge_d*n_strings+standoff_r;
+neck_d = pod_d*n_strings+ridge_d*n_strings + 2.6;
 
 neck_r1=neck_d/2;
 neck_r2=36;
@@ -79,7 +82,6 @@ header_oled_l = 12;
 header_pos_x = 3.38;
 header_pos_y = 4.92;
 header_pos_y_offset = 3;
-header_pos_x2_offset = 3.48; // Offset for second header from PCB edge
 pcb_edge_offset = 1; // Offset from PCB edge
 pcb_pos_y_offset = 1; // Y offset for PCB position
 screw_pos_y_offset = 1; // Y offset for screw positions
@@ -116,8 +118,6 @@ oled_pos_y_offset = 2.7;
 oled_support_top_offset = 5.2;
 oled_support_bottom_offset = 14.2;
 oled_opening_top_offset = 4.6;
-oled_screw_x1 = 31.1;
-oled_screw_x2 = 8.9;
 oled_screw_y1 = 20.2;
 oled_screw_y2 = 1.7;
 oled_ribbon_x = 19.0;
@@ -303,112 +303,24 @@ shell_battery_offset_x = 212.6;
 shell_battery_holder_x = 112;
 shell_speaker_offset_x = 13;
 
+$fn=resolution;
+
 function center(x,y,z) = [x/-2,y/-2,z/-2];
 
-module screw_neg(){
-    ctrsnk = countersunk_height;
-    
-    rotate([0,90,0])
-    cylinder(r = screw_r, h = neck_w,$fn=64);
-    
-    rotate([0,90,0])
-    cylinder(ctrsnk, screw_r*2, screw_r);
-    
-    translate([neck_w,0,0])
-    rotate([0,-90,0])
-    cylinder(ctrsnk, screw_r*2, screw_r);
-}
-
-module screw_negs(){
-    translate([0,neck_d*0.25,-neck_top_h-tongue_h/2])
-    screw_neg();
-    
-    translate([0,neck_d*0.75,-neck_top_h-tongue_h/2])
-    screw_neg();
+module screw_hole(){
+    cylinder(r = screw_hole_r, h = screw_hole_depth,$fn=64);
 }
     
 module standoff(height){
     difference() {
          cylinder(r = standoff_r, h = height,$fn=64);
-         cylinder(r = screw_r, h = height,$fn=64);
+         cylinder(r = threaded_insert_r, h = height,$fn=64);
     };
 }
 
-module u_standoff(height, negative=false){
-    if(negative){
-        hull(){
-         cylinder(r = standoff_r+so_clr, h = height,$fn=64);
-            
-         translate([0,standoff_r/2,0])
-         cylinder(r = standoff_r+so_clr, h = height,$fn=64);
-        }
-    } else {
-    difference() {
-        hull(){
-         cylinder(r = standoff_r, h = height,$fn=64);
-            
-         translate([0,standoff_r/2,0])
-         cylinder(r = standoff_r, h = height,$fn=64);
-        }
-        
-        cylinder(r = screw_r, h = height,$fn=64);
-        }
-    }
-}
-
-module u_standoffs(height, negative=false) {
-    y1 = -ridge_d/2-screw_r;
-    y2 = (pod_d*n_strings+ridge_d*n_strings)-ridge_d-standoff_r*2-screw_r;
-    if(negative){
-    // Lower
-    translate([standoff_r,y1,0]) u_standoff(height,true);
-    translate([(pod_w*n_pods_per_string)-standoff_r,y1,0]) u_standoff(height,true);
-    translate([(pod_w*n_pods_per_string)/2,y1,0]) u_standoff(height,true);
-    // Upper
-    translate([standoff_r,y2,0]) rotate([0,0,180])u_standoff(height,true);
-    translate([(pod_w*n_pods_per_string)-standoff_r,y2,0]) rotate([0,0,180]) u_standoff(height,true);
-    translate([(pod_w*n_pods_per_string)/2,y2,0]) rotate([0,0,180]) u_standoff(height,true);
-        
-    } else {
-    // Lower
-    translate([standoff_r,y1,0]) u_standoff(height);
-    translate([(pod_w*n_pods_per_string)-standoff_r,y1,0]) u_standoff(height);
-    translate([(pod_w*n_pods_per_string)/2,y1,0]) u_standoff(height);
-    // Upper
-    translate([standoff_r,y2,0]) rotate([0,0,180])u_standoff(height);
-    translate([(pod_w*n_pods_per_string)-standoff_r,y2,0]) rotate([0,0,180]) u_standoff(height);
-    translate([(pod_w*n_pods_per_string)/2,y2,0]) rotate([0,0,180]) u_standoff(height);
-    }
-}
-
-module standoffs(height, negative=false) {
-    y1 = -ridge_d/2-screw_r;
-    y2 = (pod_d*n_strings+ridge_d*n_strings)-ridge_d-standoff_r*2-screw_r;
-    if(negative){
-        // Lower
-    translate([standoff_r,y1,0]) cylinder(r = standoff_r+so_clr, h = height,$fn=64);
-    translate([(pod_w*n_pods_per_string)-standoff_r,y1,0]) cylinder(r = standoff_r+so_clr, h = height,$fn=64);
-    translate([(pod_w*n_pods_per_string)/2,y1,0]) cylinder(r = standoff_r+so_clr, h = height,$fn=64);
-    // Upper
-    translate([standoff_r,y2,0]) rotate([0,0,180])cylinder(r = standoff_r+so_clr, h = height,$fn=64);
-    translate([(pod_w*n_pods_per_string)-standoff_r,y2,0]) rotate([0,0,180]) cylinder(r = standoff_r+so_clr, h = height,$fn=64);
-    translate([(pod_w*n_pods_per_string)/2,y2,0]) rotate([0,0,180]) cylinder(r = standoff_r+so_clr, h = height,$fn=64);
-        }
-       else {
-    // Lower
-    translate([standoff_r,y1,0]) standoff(height);
-    translate([(pod_w*n_pods_per_string)-standoff_r,y1,0]) standoff(height);
-    translate([(pod_w*n_pods_per_string)/2,y1,0]) standoff(height);
-    // Upper
-    translate([standoff_r,y2,0]) rotate([0,0,180])standoff(height);
-    translate([(pod_w*n_pods_per_string)-standoff_r,y2,0]) rotate([0,0,180]) standoff(height);
-    translate([(pod_w*n_pods_per_string)/2,y2,0]) rotate([0,0,180]) standoff(height);
-       }
-}
-
 module countersunk(){
-    cylinder(r = screw_r, h = screw_hole_depth,$fn=64);
+    cylinder(r = screw_hole_r, h = screw_hole_depth,$fn=64);
     translate([0,0,countersunk_height])
     rotate([0,180,0])
-    cylinder(h=wall_d, r1=screw_r*2, r2=screw_r);
+    cylinder(h=wall_d, r1=screw_hole_r*2, r2=screw_hole_r);
 }

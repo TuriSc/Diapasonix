@@ -101,9 +101,9 @@ module speaker_holder() {
             cube([speaker_pos_w2, neck_d, speaker_h]);
         }
         #translate([speaker_screw_x1, 0, speaker_h - speaker_screw_z_offset]) 
-        cylinder(h = speaker_screw_h, r = screw_r);
+        cylinder(h = speaker_screw_h, r = screw_hole_r);
         #translate([speaker_spacing + speaker_screw_x2_offset, 0, speaker_h - speaker_screw_z_offset]) 
-        cylinder(h = speaker_screw_h, r = screw_r);
+        cylinder(h = speaker_screw_h, r = screw_hole_r);
     }
 }
 
@@ -113,9 +113,9 @@ module pico_holder(){
             cube([4,neck_d,8.5]);
             // Screw holes 
             translate([2,neck_d/2-5.68,2])
-            cylinder(h=6.3, r=screw_r);
+            cylinder(h=6.3, r=screw_hole_r);
             translate([2,neck_d/2+5.68,2])
-            cylinder(h=6.3, r=screw_r);
+            cylinder(h=6.3, r=screw_hole_r);
         }
     difference(){
      // Main shape
