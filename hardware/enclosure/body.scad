@@ -71,11 +71,14 @@ module body(){
             }
         }
         
-        // Bottom screw
-        translate([neck_w - wall_d * 2, neck_r1, 0])
-        rotate([-180, 0, 0])
-        translate([wall_d + tray_bottom_screw_x, 0, neck_r1 - tray_bottom_screw_z_offset])
-        countersunk();
+        // Power switch opening
+        translate([neck_w - power_switch_x_offset, neck_d/2,-neck_h])
+        cylinder(h=5, r=power_switch_r);
+        
+        // Audio jack opening
+        translate([0, neck_d/2,-jack_z_offset])
+        rotate([0,90,0])
+        cylinder(h=20, r=jack_r);
     }
     
     // Top face
@@ -128,7 +131,6 @@ module body(){
         cylinder(r = threaded_insert_r, h = threaded_insert_h, $fn = 64);
         translate([neck_w - ui_screw_x_offset, neck_d / 2 + oled_screw_y1, -threaded_insert_h])
         cylinder(r = threaded_insert_r, h = threaded_insert_h, $fn = 64);
-
         
         // OLED opening
         translate([neck_w - oled_pos_x - 5.1, neck_d / 2 - oled_opening_top_offset, -2])

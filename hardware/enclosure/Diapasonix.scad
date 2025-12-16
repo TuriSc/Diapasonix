@@ -43,6 +43,8 @@ neck_d = pod_d*n_strings+ridge_d*n_strings + 2.6;
 
 neck_r1=neck_d/2;
 neck_r2=36;
+neck_h = neck_r1;
+
 tongue = 1.2;
 tongue_h = 4.0;
 r_clearance = .4;
@@ -157,6 +159,14 @@ nav_switch_cap_base_z = -1;
 nav_switch_cap_base_h = 1.3 + 2.6;
 nav_switch_cap_cross_z = 0.6;
 nav_switch_import_z = -0.6;
+
+// Audio jack opening
+jack_r = 3.5;
+jack_z_offset = 10;
+
+// Power switch opening
+power_switch_r = 3.5;
+power_switch_x_offset = 66;
 
 // UI screw position
 ui_screw_x_offset = 4.730;
